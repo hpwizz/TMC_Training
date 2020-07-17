@@ -9,18 +9,15 @@ drop table if exists michigan.LLsq;
 create table michigan.LLsq as
 
 select 
-  csr.ContactsSurveyResponseID,
   csr.vanid,
   csr.surveyquestionid,
   csr.surveyresponseid,
-  csr.datecanvassed,
-  csr.canvassedby,
-  csr.contactscontactid
+  csr.datecanvassed
     
 from ot2020_vansync.tsm_csi_contactssurveyresponses_myc as csr
 
 where csr.statecode = 'MI'
-	and csr.surveyquestionid = 378658 -- Leadership Ladder SQ
+and csr.surveyquestionid = 378658 -- Leadership Ladder SQ
 
 
 
@@ -33,23 +30,20 @@ where csr.statecode = 'MI'
 
 drop table if exists michigan.LLsq_ranked;
 
-create table michigan.::sq_ranked as
+create table michigan.LLsq_ranked as
 
 select 
-  csr.ContactsSurveyResponseID,
   csr.vanid,
   csr.surveyquestionid,
   csr.surveyresponseid,
   csr.datecanvassed,
-  csr.canvassedby,
-  csr.contactscontactid,
   row_number() over( -- ranks most recent responses
-    partition by vanid
-    order by datecanvassed desc
-    ) as row_number
+	partition by vanid
+	order by datecanvassed desc
+  	) as row_number
     
 from ot2020_vansync.tsm_csi_contactssurveyresponses_myc
 
 where csr.statecode = 'MI'
-	and csr.surveyquestionid = 378658 -- Leadership Ladder SQ
-  -- and row_number = 1
+and csr.surveyquestionid = 378658 -- Leadership Ladder SQ
+-- and row_number = 1
