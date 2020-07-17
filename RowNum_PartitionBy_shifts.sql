@@ -55,4 +55,4 @@ left join ot2020_vansync.tsm_csi_EventSignupsStatuses c
 where a.statecode = 'MI'
   and b.eventcalendarid <> 387065 -- not a 1-on-1
   and c.eventstatusid = 2 -- completed
-  and row_number = 1 -- most recent event
+ -- and row_number = 1 -- most recent event
